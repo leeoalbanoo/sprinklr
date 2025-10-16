@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="30; url='https://external.sprinklr.com/research/reporting/dashboard/68b6e31ad43569022d1b1bb6/tab/21?id=7891356E820BCAEC3B22A5FBBF0CA4BAB66558D91D4C559005090D5F909F4D82'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Sprinklr</title>
   <style>
@@ -11,8 +10,8 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden; /* evita scroll */
-      background-color: #000; /* opcional, para preencher fundo */
+      overflow: hidden;
+      background-color: #000;
     }
     iframe {
       width: 100%;
@@ -22,6 +21,16 @@
   </style>
 </head>
 <body>
-  <iframe src="https://external.sprinklr.com/research/reporting/dashboard/68b6e31ad43569022d1b1bb6/tab/21?id=7891356E820BCAEC3B22A5FBBF0CA4BAB66558D91D4C559005090D5F909F4D82"></iframe>
+  <iframe id="sprinklrFrame" src="https://external.sprinklr.com/research/reporting/dashboard/68b6e31ad43569022d1b1bb6/tab/21?id=7891356E820BCAEC3B22A5FBBF0CA4BAB66558D91D4C559005090D5F909F4D82"></iframe>
+
+  <script>
+    // tempo em milissegundos → 5 minutos = 300.000 ms
+    const tempoAtualizacao = 10000; 
+
+    setInterval(() => {
+      const iframe = document.getElementById('sprinklrFrame');
+      iframe.src = iframe.src; // recarrega o iframe sem sair da página
+    }, tempoAtualizacao);
+  </script>
 </body>
 </html>
