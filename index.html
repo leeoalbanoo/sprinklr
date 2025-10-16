@@ -18,19 +18,51 @@
       height: 100%;
       border: none;
     }
+    #contador {
+      position: fixed;
+      bottom: 8px;
+      right: 16px;
+      color: #ccc;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      opacity: 0.6;
+    }
   </style>
 </head>
 <body>
-  <iframe id="sprinklrFrame" src="https://external.sprinklr.com/research/reporting/dashboard/68b6e31ad43569022d1b1bb6/tab/21?id=7891356E820BCAEC3B22A5FBBF0CA4BAB66558D91D4C559005090D5F909F4D82"></iframe>
+  <iframe id="sprinklrFrame"></iframe>
+  <div id="contador"></div>
 
   <script>
-    // tempo em milissegundos → 5 minutos = 300.000 ms
-    const tempoAtualizacao = 60000; 
+    const params = new URLSearchParams(window.location.search);
+    const dashboardUrl = params.get("link");
 
-    setInterval(() => {
-      const iframe = document.getElementById('sprinklrFrame');
-      iframe.src = iframe.src; // recarrega o iframe sem sair da página
-    }, tempoAtualizacao);
+    if (!dashboardUrl) {
+      document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%;font-family:Arial'>Nenhum link foi informado.<br>Use ?link=URL_DO_DASHBOARD</h2>";
+    } else {
+      const iframe = document.getElementById("sprinklrFrame");
+      iframe.src = dashboardUrl;
+
+      // tempo de atualização (em milissegundos)
+      const tempoAtualizacao = 120000; // 5 minutos
+      let segundosRestantes = tempoAtualizacao / 1000;
+
+      // Atualiza o contador
+      const contador = document.getElementById("contador");
+      setInterval(() => {
+        segundosRestantes--;
+        if (segundosRestantes <= 0) segundosRestantes = tempoAtualizacao / 1000;
+        const minutos = Math.floor(segundosRestantes / 60);
+        const segundos = String(segundosRestantes % 60).padStart(2, "0");
+        contador.textContent = `Atualizando em ${minutos}:${segundos}`;
+      }, 1000);
+
+      // Recarrega o iframe periodicamente
+      setInterval(() => {
+        iframe.src = dashboardUrl;
+        segundosRestantes = tempoAtualizacao / 1000;
+      }, tempoAtualizacao);
+    }
   </script>
 </body>
 </html>
